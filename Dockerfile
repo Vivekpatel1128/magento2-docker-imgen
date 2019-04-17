@@ -1,12 +1,26 @@
-# base image
-FROM techdivision/dnmp-debian:stretch
+# base images
+FROM vivekmoradiatech/dnmp-debian-cron:master as cron
+
+FROM vivekmoradiatech/dnmp-debian-nginx:master as nginx
+
+FROM vivekmoradiatech/dnmp-debian-varnish:master as varnish
+
+FROM vivekmoradiatech/dnmp-debian-redis:master as redis
+
+FROM vivekmoradiatech/dnmp-debian-rabbitmq:master as rabbitmq
+
+FROM vivekmoradiatech/dnmp-debian-elasticsearch:master as elasticsearch
+
+FROM vivekmoradiatech/dnmp-debian-php-fpm:master as php-fpm
+
+FROM vivekmoradiatech/dnmp-debian-mysql:master as mysql
 
 # define labels
 LABEL maintainer="j.zelger@techdivision.com"
 
 # define composer magento repo credentials args
-ARG MAGENTO_REPO_USERNAME=""
-ARG MAGENTO_REPO_PASSWORD=""
+ARG MAGENTO_REPO_USERNAME="312d0e64ff157c08743c951e2d40322b"
+ARG MAGENTO_REPO_PASSWORD="98605519ae9d1e1e041e146b82d4ab6c"
 
 # define magento install args
 ARG MAGENTO_INSTALL_ADMIN_EMAIL="admin@magento.com"
@@ -15,24 +29,24 @@ ARG MAGENTO_INSTALL_ADMIN_PASSWORD="admin123"
 ARG MAGENTO_INSTALL_ADMIN_FIRSTNAME="Magento"
 ARG MAGENTO_INSTALL_ADMIN_LASTNAME="Admin"
 ARG MAGENTO_INSTALL_ADMIN_USE_SECURITY=1
-ARG MAGENTO_INSTALL_BASE_URL="http://localhost/"
-ARG MAGENTO_INSTALL_BASE_URL_SECURE="https://localhost/"
+ARG MAGENTO_INSTALL_BASE_URL="http://127.0.0.1/"
+ARG MAGENTO_INSTALL_BASE_URL_SECURE="https://127.0.0.1/"
 ARG MAGENTO_INSTALL_BACKEND_FRONTNAME="admin"
 ARG MAGENTO_INSTALL_DB_HOST="localhost"
 ARG MAGENTO_INSTALL_DB_NAME="magento"
 ARG MAGENTO_INSTALL_DB_USER="magento"
 ARG MAGENTO_INSTALL_DB_PASSWORD="magento"
-ARG MAGENTO_INSTALL_LANGUAGE="de_DE"
-ARG MAGENTO_INSTALL_CURRENCY="EUR"
-ARG MAGENTO_INSTALL_TIMEZONE="Europe/Berlin"
+ARG MAGENTO_INSTALL_LANGUAGE="en_US"
+ARG MAGENTO_INSTALL_CURRENCY="USD"
+ARG MAGENTO_INSTALL_TIMEZONE="America/Chicago"
 ARG MAGENTO_INSTALL_USE_REWRITES=1
 ARG MAGENTO_INSTALL_USE_SECURE=1
 ARG MAGENTO_INSTALL_USE_SECURE_ADMIN=1
-ARG MAGENTO_INSTALL_SAMPLEDATA=0
+ARG MAGENTO_INSTALL_SAMPLEDATA=1
 ARG MAGENTO_INSTALL_B2B=0
-ARG MAGENTO_INSTALL_BLUEFOOT=0
-ARG MAGENTO_INSTALL_EDITION="community"
-ARG MAGENTO_INSTALL_VERSION="2.2.1"
+ARG MAGENTO_INSTALL_BLUEFOOT=1
+ARG MAGENTO_INSTALL_EDITION="enterprise"
+ARG MAGENTO_INSTALL_VERSION="2.3.1"
 ARG MAGENTO_INSTALL_STABILITY="stable"
 ARG MAGENTO_INSTALL_MODE="production"
 ARG MAGENTO_INSTALL_AMQP_HOST="localhost"
@@ -40,7 +54,7 @@ ARG MAGENTO_INSTALL_AMQP_PORT="5672"
 ARG MAGENTO_INSTALL_AMQP_USER="guest"
 ARG MAGENTO_INSTALL_AMQP_PASSWORD="guest"
 ARG MAGENTO_INSTALL_AMQP_VIRTUALHOST="/"
-ARG PHP_VERSION="7.0"
+ARG PHP_VERSION="7.2"
 
 # define ampq installation append line
 ENV MAGENTO_INSTALL_AMPQ="--amqp-host=$MAGENTO_INSTALL_AMQP_HOST \
